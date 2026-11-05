@@ -53,7 +53,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     inset: 0px;
     opacity: 0;
     background-color: var(--overlay-color);
-    transition: opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: opacity var(--transition-duration, 400ms) var(--transition-timing, ease-in-out);
 }
 
 .modal[data-state="open"] > .modal-overlay { opacity: 1; }
@@ -85,8 +85,8 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     opacity: 0;
     transform: translateY(10px) scale(75%);
     transition:
-        opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out),
-        transform var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+        opacity var(--transition-duration, 400ms) var(--transition-timing, ease-in-out),
+        transform var(--transition-duration, 400ms) var(--transition-timing, ease-in-out);
 }
 
 /* `transform: none` al final: no deja un transform "identidad" que cree un containing block
