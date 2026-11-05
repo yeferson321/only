@@ -1,0 +1,25 @@
+---
+import astroLogo from '../assets/astro.svg';
+import background from '../assets/background.svg';
+import Modal from './ui/common/Modal.astro';
+---
+
+<button type="button" class="p-2.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 transition-colors duration-300 ease-in-out" data-modal-open="welcome-modal" aria-label="Abrir modal de inicio de sesión" aria-haspopup="dialog" aria-expanded="false" aria-controls="welcome-modal">
+	Abrir Modal
+</button>
+
+<Modal id="welcome-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.5)" offset="2rem" unmount={true}>
+	<div class="content">
+		<h2 id="welcome-modal-title">Welcome to Astro!</h2>
+    	<p>This is a simple modal component.</p>
+	</div>
+</Modal>
+
+<style>
+	.content {
+		padding: 2rem;
+		background-color: white;
+		border-radius: 0.5rem;
+		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+	}
+</style>
