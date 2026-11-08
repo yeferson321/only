@@ -1,48 +1,28 @@
 export const appendChildElement = (element: HTMLElement, parent?: HTMLElement) => (parent ?? document.body).appendChild(element);
 export const removeElement = (element: HTMLElement) => element.remove();
 
-const FOCUSABLE_SELECTOR = [
-    'a[href]',
-    'button:not([disabled])',
-    'input:not([disabled]):not([type="hidden"])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'summary',
-    '[contenteditable="true"]',
-    '[tabindex]:not([tabindex="-1"])',
-].join(',');
+const FOCUSABLE_SELECTOR = ':is(button, [href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):not([disabled]):not([aria-hidden="true"])';
 
-// `checkVisibility` solo necesita estilos calculados (no fuerza layout como `offsetParent`)
-// y, a diferencia de `offsetParent`, no da falsos negativos con `position: fixed`.
-const isVisible = (element: HTMLElement) =>
-    (element.checkVisibility?.() ?? element.getClientRects().length > 0) && !element.closest('[aria-hidden="true"]');
+export const trapFocus = (element: HTMLElement, event: KeyboardEvent) => {
+    const focusables = Array.from(element.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter((HTMLElement) => HTMLElement.offsetParent !== null);
 
-export const getFocusable = (root: HTMLElement) =>
-    Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(isVisible);
-
-export const trapFocus = (root: HTMLElement, event: KeyboardEvent) => {
-    const focusables = getFocusable(root);
-
+    // Sin elementos focusables: el foco se queda en el propio modal.
     if (focusables.length === 0) {
         event.preventDefault();
-        root.focus({ preventScroll: true });
+        element.focus();
         return;
     }
 
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    const active = document.activeElement;
+    const firstFocusable = focusables[0];
+    const lastFocusable = focusables[focusables.length - 1];
+    const activeElement = document.activeElement;
 
-    // Foco en el propio contenedor (tabindex="-1") o fuera del modal: se entra por el extremo que toque.
-    const isOutside = active === root || !root.contains(active);
+    // Foco en el propio contenedor o fuera del modal: se entra por el extremo que toque.
+    const isOutside = activeElement === element || !element.contains(activeElement);
+    const boundary = event.shiftKey ? firstFocusable : lastFocusable;
 
-    if (event.shiftKey) {
-        if (isOutside || active === first) {
-            event.preventDefault();
-            last.focus();
-        }
-    } else if (isOutside || active === last) {
+    if (isOutside || activeElement === boundary) {
         event.preventDefault();
-        first.focus();
+        (event.shiftKey ? lastFocusable : firstFocusable).focus();
     }
 };
