@@ -33,31 +33,6 @@ const items = Array.from({ length: count }, (_, i) => i);
 
 </Modal>
 
-<button id="abrir">Abrir Modal</button>
-
-<dialog
-  id="modal"
-  class="m-auto w-[min(90vw,560px)] rounded-[40px] border border-white/[0.12]
-         bg-[#3c323c]/30 p-8 text-white
-         backdrop-blur-[40px] backdrop-saturate-[180%]
-         shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_30px_80px_rgba(0,0,0,0.5)]
-         backdrop:bg-black/15"
->
-  <h2 class="mb-6 text-[22px] font-semibold">¿Quieres salir del Apple TV?</h2>
-  <div class="flex gap-4">
-    <button data-close class="flex-1 rounded-full bg-white/[0.92] p-[18px] text-xl font-semibold text-[#666]">Cancelar</button>
-    <button data-close class="flex-1 rounded-full bg-[#5064c8]/70 p-[18px] text-xl font-semibold text-[#3aa0ff]">Salir</button>
-  </div>
-</dialog>
-
-<script>
-  const modal = document.getElementById('modal') as HTMLDialogElement;
-  document.getElementById('abrir')!.addEventListener('click', () => modal.showModal());
-  modal.querySelectorAll('[data-close]').forEach((b) =>
-    b.addEventListener('click', () => modal.close())
-  );
-</script>
-
 <style>
 	.content {
 		/* padding: 2rem;
@@ -67,7 +42,7 @@ const items = Array.from({ length: count }, (_, i) => i);
 	}
 
 	 .item {
-        content-visibility: auto;
-        contain-intrinsic-size: auto 3.5rem;
+        /* content-visibility: auto;
+        contain-intrinsic-size: auto 3.5rem; */
     }
 </style>
