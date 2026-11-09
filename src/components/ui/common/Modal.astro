@@ -50,7 +50,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     inset: 0px;
     opacity: 0;
     background-color: var(--overlay-color);
-    backdrop-filter: blur(1px);
+    /* backdrop-filter: blur(1px); */
     transition: opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
 }
 
@@ -93,7 +93,9 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     transform: none;
 }
 
-
+.modal:not([data-state="closed"]) .modal-panel {
+    will-change: opacity, transform;
+}
 </style>
 
 <script>
