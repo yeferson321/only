@@ -11,30 +11,59 @@ const items = Array.from({ length: count }, (_, i) => i);
 	Abrir Modal
 </button>
 
-<Modal id="welcome-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.5)" offset="2rem" unmount={false}>
-	<div class="content border border-neutral-200/70 rounded-3xl bg-red-600">
+<img src="https://cdn.pixabay.com/photo/2025/08/27/12/43/flower-9799874_1280.jpg" alt="Background" class="w-full  mt-60 " />
 
-		<h2 id="welcome-modal-title">Welcome to Astro!</h2>
-    	<p>This is a simple modal component.</p>
+<Modal id="welcome-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.3)" offset="2rem" unmount={false}>
 
-		    <div style="background: white; padding: 1rem; max-width: 40rem;">
-        <h2 id="test-modal-title">Prueba de carga</h2>
-        {items.map((i) => (
-            <div class="item" style="padding: .5rem; margin: .25rem 0; border-radius: .5rem; box-shadow: 0 4px 12px rgb(0 0 0 / .25);">
-                <button>Elemento {i}</button>
-                <span>Texto de ejemplo para ocupar espacio</span>
-            </div>
-        ))}
-    	</div>
-	</div>
+		<div class="p-6 border rounded-4xl border-white/10 bg-taupe-800/50 backdrop-blur-xl backdrop-saturate-125 shadow-md">
+
+			<h2 class="text-xl font-bold text-white">¿Quieres salir del Apple TV?</h2>
+
+			<div class="mt-6 flex justify-center gap-4">
+				<button type="button" class="px-4 py-2 flex-1 text-lg font-medium text-neutral-800 rounded-3xl drop-shadow-xl bg-white hover:bg-blue-600 transition-colors duration-300 ease-in-out" data-modal-close="welcome-modal">
+					Cancelar
+    			</button>
+
+				<button type="button" class="px-4 py-2 flex-1 text-lg font-medium text-blue-600 rounded-3xl drop-shadow-xl bg-blue-500/40 hover:bg-blue-600 transition-colors duration-300 ease-in-out" data-modal-close="welcome-modal">
+					Salir
+    			</button>
+			</div>
+
+		</div>
+
 </Modal>
+
+<button id="abrir">Abrir Modal</button>
+
+<dialog
+  id="modal"
+  class="m-auto w-[min(90vw,560px)] rounded-[40px] border border-white/[0.12]
+         bg-[#3c323c]/30 p-8 text-white
+         backdrop-blur-[40px] backdrop-saturate-[180%]
+         shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_30px_80px_rgba(0,0,0,0.5)]
+         backdrop:bg-black/15"
+>
+  <h2 class="mb-6 text-[22px] font-semibold">¿Quieres salir del Apple TV?</h2>
+  <div class="flex gap-4">
+    <button data-close class="flex-1 rounded-full bg-white/[0.92] p-[18px] text-xl font-semibold text-[#666]">Cancelar</button>
+    <button data-close class="flex-1 rounded-full bg-[#5064c8]/70 p-[18px] text-xl font-semibold text-[#3aa0ff]">Salir</button>
+  </div>
+</dialog>
+
+<script>
+  const modal = document.getElementById('modal') as HTMLDialogElement;
+  document.getElementById('abrir')!.addEventListener('click', () => modal.showModal());
+  modal.querySelectorAll('[data-close]').forEach((b) =>
+    b.addEventListener('click', () => modal.close())
+  );
+</script>
 
 <style>
 	.content {
-		padding: 2rem;
-		background-color: white;
-		
-		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+		/* padding: 2rem;
+		background-color: white; */
+		    /* backdrop-filter: blur(1px); */
+		/* box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); */
 	}
 
 	 .item {
