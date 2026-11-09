@@ -92,6 +92,10 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     opacity: 1;
     transform: none;
 }
+
+.modal:not([data-state="closed"]) .modal-panel {
+    will-change: opacity, transform;
+}
 </style>
 
 <script>
@@ -137,11 +141,13 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 
             modalElement.dataset.state = "opening";
 
-            requestAnimationFrame(() => {
-                setAccessibility(false);
-                modalElement.addEventListener("keydown", handleKeyboard);
-                (focusableElement || modalElement).focus({ preventScroll: true });
-            });
+            requestAnimationFrame(() =>
+                requestAnimationFrame(() => {
+                    setAccessibility(false);
+                    modalElement.addEventListener("keydown", handleKeyboard);
+                    (focusableElement || modalElement).focus({ preventScroll: true });
+                })
+            );
         };
 
         const hideModal = () => {
