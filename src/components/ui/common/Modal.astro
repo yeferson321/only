@@ -47,6 +47,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 
 .modal-overlay {
     position: fixed;
+    width: 100vw;
     inset: 0px;
     opacity: 0;
     background-color: var(--overlay-color);
@@ -58,6 +59,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 /* No captura clics: así llegan al overlay y solo el panel los recibe. */
 .modal-wrapper {
     position: fixed;
+        width: 100vw;
     inset: 0px;
     z-index: 50;
     width: 100vw;

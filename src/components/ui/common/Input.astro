@@ -1,0 +1,63 @@
+---
+// import type { ValidatorKey } from 'ui/behaviors';
+// import { FormField } from 'ui/components';
+// import Feedback from '@/components/common/form/Feedback.astro';
+
+interface Props extends astroHTML.JSX.InputHTMLAttributes {
+    id: string;
+    label?: string;
+    class?: string;
+    messages?: Record<string, string>;
+    // validate: ValidatorKey;
+};
+
+const { id, type, label, class: className, messages = {}, ...inputAttributes } = Astro.props;
+---
+
+<!-- <FormField> -->
+
+    <div class="relative">
+        
+        <input id={id} type={type} class:list={["field-input", className]} placeholder=" " {...inputAttributes} data-field-input />
+        
+        <slot/>
+
+    </div>
+
+    <!-- <Feedback type="field" messages={messages} /> -->
+
+<!-- </FormField> -->
+
+<style is:global>
+.form-field[data-state="valid"] .field-input {
+    border-color: oklch(50.8% 0.118 165.612);
+}
+
+.form-field[data-state="invalid"] .field-input,
+.form-field[data-state="error"] .field-input {
+    border-color: oklch(75% 0.183 55.934);
+}
+
+.form-field[data-state="valid"] .field-label {
+    color: oklch(50.8% 0.118 165.612);
+}
+
+.form-field[data-state="invalid"] .field-label,
+.form-field[data-state="error"] .field-label {
+    color: oklch(75% 0.183 55.934);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    /* Esto simula el background-color real usando un box-shadow enorme */
+    -webkit-box-shadow: 0 0 0 1000px oklch(100% 0 0) inset !important;
+    box-shadow: 0 0 0 1000px oklch(100% 0 0) inset !important;
+    /* El color del texto sí puedes forzarlo directamente */
+    -webkit-text-fill-color: oklch(43.9% 0 0) !important;
+    caret-color: oklch(43.9% 0 0);
+    /* Evita el "flash" del color por defecto al cargar */
+    transition: background-color 5000s ease-in-out 0s;
+}
+</style>

@@ -1,33 +1,84 @@
 ---
 import astroLogo from '../assets/astro.svg';
 import background from '../assets/background.svg';
+import IconXmark from './ui/icons/outline/IconXmark.svg';
 import Modal from './ui/common/Modal.astro';
-
-const count = 4; // prueba con 0, 500, 3000 y 10000
-const items = Array.from({ length: count }, (_, i) => i);
+import Input from './ui/common/Input.astro';
+import { IconGoogle, IconX } from './ui/icons/brands';
 ---
 
-<button type="button" class="p-2.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 transition-colors duration-300 ease-in-out" data-modal-open="welcome-modal" aria-label="Abrir modal de inicio de sesión" aria-haspopup="dialog" aria-expanded="false" aria-controls="welcome-modal">
+<button type="button" class="p-2.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 transition-colors duration-300 ease-in-out" data-modal-open="signin-modal" aria-label="Abrir modal de inicio de sesión" aria-haspopup="dialog" aria-expanded="false" aria-controls="signin-modal">
 	Abrir Modal
 </button>
 
 <img src="https://cdn.pixabay.com/photo/2025/08/27/12/43/flower-9799874_1280.jpg" alt="Background" class="w-full  mt-60 " />
 
-<Modal id="welcome-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.3)" offset="2rem" unmount={false}>
+<Modal id="signin-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.3)" offset="2rem" unmount={false}>
 
-		<div class="p-6 border rounded-4xl border-white/10 bg-taupe-800/50 backdrop-blur-xl backdrop-saturate-125 shadow-md">
+		<div class="py-6 px-8 border rounded-4xl border-white/10 bg-taupe-800/60 backdrop-blur-2xl backdrop-saturate-125 shadow-md">
 
-			<h2 class="text-xl font-bold text-white">¿Quieres salir del Apple TV?</h2>
-
-			<div class="mt-6 flex justify-center gap-4">
-				<button type="button" class="px-4 py-2 flex-1 text-lg font-medium text-neutral-800 rounded-3xl drop-shadow-xl bg-white hover:bg-blue-600 transition-colors duration-300 ease-in-out" data-modal-close="welcome-modal">
-					Cancelar
-    			</button>
-
-				<button type="button" class="px-4 py-2 flex-1 text-lg font-medium text-blue-600 rounded-3xl drop-shadow-xl bg-blue-500/40 hover:bg-blue-600 transition-colors duration-300 ease-in-out" data-modal-close="welcome-modal">
-					Salir
-    			</button>
+			<div class="flex justify-end">
+				<button type="button" data-modal-close="signin-modal" aria-label="Cerrar modal de inicio de sesión">
+					<IconXmark stroke-width="1.8" width="28" height="28" class="stroke-white"/>
+				</button>
 			</div>
+
+			<h2 class="mb-3 text-2xl font-semibold text-white text-center">Crea tu cuenta</h2>
+
+			<p class="mb-6 text-base text-white/80 text-center">¿Ya tienes una cuenta? <button class="underline font-medium text-white"> Inicia sesión</button></p>
+
+			<div class="mb-6 space-y-4">
+
+				<Input id="signin-email" type="email" label="Correo electrónico"
+    class="peer block w-full h-12 px-4 border border-transparent rounded-2xl text-lg text-white bg-transparent focus:outline-none">
+
+    <fieldset aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 -top-1.25 bottom-0 m-0 min-w-0 rounded-2xl border border-white px-3 transition-colors duration-300
+               peer-focus:border-purple-600
+               peer-placeholder-shown:[&>legend]:max-w-[0.01px]
+               peer-focus:[&>legend]:max-w-full">
+        <legend class="invisible h-2.75 max-w-full whitespace-nowrap p-0 text-base transition-[max-width] duration-300">
+            <span class="px-1">Tu correo electrónico</span>
+        </legend>
+    </fieldset>
+
+    <label for="signin-email" class="absolute left-3 px-1 pointer-events-none duration-300 top-0 -translate-y-1/2 text-base text-white
+        peer-placeholder-shown:top-1/2
+        peer-placeholder-shown:-translate-y-1/2
+        peer-placeholder-shown:text-lg
+        peer-placeholder-shown:bg-transparent
+        peer-focus:top-0
+        peer-focus:-translate-y-1/2
+        peer-focus:text-base
+        peer-focus:text-purple-600">
+        Tu correo electrónico
+    </label>
+</Input>
+
+				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl drop-shadow-xl bg-purple-600 hover:bg-purple-700 transition-colors duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none" disabled>
+					Crear cuenta
+    			</button>
+
+			</div>
+
+
+			<p class="mb-4 text-base text-white text-center">También puedes usar</p>
+			
+			<div class="mb-6 space-y-4">
+
+				<button type="button" class="text-lg font-medium text-white w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl drop-shadow-xl bg-white hover:bg-black transition-colors duration-300 ease-in-out">
+					<IconGoogle width="20" height="20"/>
+					<span class="text-base font-medium text-neutral-600">Continuar con Google</span>
+    			</button>
+
+				<button type="button" class="text-lg font-medium text-white w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl drop-shadow-xl bg-white hover:bg-black transition-colors duration-300 ease-in-out">
+					<IconX width="20" height="20"/>
+					<span class="text-base font-medium text-neutral-600">Continuar con X</span>
+    			</button>
+
+			</div>
+
+			<p class="text-sm text-white/80 text-center">Al continuar, aceptas nuestras <a href="/terms" class="underline font-medium text-white">Condiciones de Uso</a> • <a href="/terms" class="underline font-medium text-white">Política de Privacidad</a></p>
 
 		</div>
 
