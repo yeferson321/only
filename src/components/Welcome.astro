@@ -15,7 +15,7 @@ import { IconGoogle, IconX } from './ui/icons/brands';
 
 <Modal id="signin-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.3)" offset="2rem" unmount={false}>
 
-		<div class="py-6 px-8 border rounded-4xl border-white/10 bg-taupe-800/60 backdrop-blur-2xl backdrop-saturate-125 shadow-md">
+		<div class="py-6 px-8 border rounded-4xl border-white/10 bg-taupe-800/60 backdrop-blur-2xl backdrop-saturate-125 shadow-xl">
 
 			<div class="flex justify-end">
 				<button type="button" data-modal-close="signin-modal" aria-label="Cerrar modal de inicio de sesión">
@@ -29,37 +29,28 @@ import { IconGoogle, IconX } from './ui/icons/brands';
 
 			<div class="mb-6 space-y-4">
 
-				<Input id="signin-email" type="email" label="Correo electrónico"
-    class="peer block w-full h-12 px-4 border border-transparent rounded-2xl text-lg text-white bg-transparent focus:outline-none">
-
-    <fieldset aria-hidden="true"
-        class="pointer-events-none absolute inset-x-0 -top-1.25 bottom-0 m-0 min-w-0 rounded-2xl border border-white px-3 transition-colors duration-300
-               peer-focus:border-purple-600
-               peer-placeholder-shown:[&>legend]:max-w-[0.01px]
-               peer-focus:[&>legend]:max-w-full">
-        <legend class="invisible h-2.75 max-w-full whitespace-nowrap p-0 text-base transition-[max-width] duration-300">
-            <span class="px-1">Tu correo electrónico</span>
-        </legend>
-    </fieldset>
-
-    <label for="signin-email" class="absolute left-3 px-1 pointer-events-none duration-300 top-0 -translate-y-1/2 text-base text-white
-        peer-placeholder-shown:top-1/2
-        peer-placeholder-shown:-translate-y-1/2
-        peer-placeholder-shown:text-lg
-        peer-placeholder-shown:bg-transparent
-        peer-focus:top-0
-        peer-focus:-translate-y-1/2
-        peer-focus:text-base
-        peer-focus:text-purple-600">
-        Tu correo electrónico
-    </label>
-</Input>
+				<Input id="signin-email" type="email" name="email" autocomplete="email" class="rounded-2xl border border-white px-4 text-lg text-white focus-within:border-purple-600 focus-within:text-purple-600" labelGap="0.5rem" labelSize="1rem" spellcheck={false} label="Tu correo electrónico" required/>
 
 				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl drop-shadow-xl bg-purple-600 hover:bg-purple-700 transition-colors duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none" disabled>
 					Crear cuenta
     			</button>
 
 			</div>
+
+
+				<!-- <Input id="signin-email" type="email" label="Correo electrónico" class="text-lg text-white peer block w-full h-13 px-4 rounded-2xl border border-white bg-transparent transition-colors duration-300 focus:outline-none focus:border-purple-600">
+					<label for="signin-email" class="text-base leading-0.5 text-white absolute left-3 top-0 px-1 rounded-2xl pointer-events-none bg-taupe-800/60 backdrop-blur-2xl -translate-y-1/2 transition-all duration-300
+    				    peer-placeholder-shown:top-1/2
+    				    peer-placeholder-shown:text-lg
+						peer-placeholder-shown:bg-transparent
+    				    peer-placeholder-shown:backdrop-blur-none
+    				    peer-focus:top-0
+    				    peer-focus:text-base
+						peer-focus:bg-taupe-800/60
+    				    peer-focus:backdrop-blur-2xl">
+    				    Tu correo electrónico
+    				</label>
+				</Input> -->
 
 
 			<p class="mb-4 text-base text-white text-center">También puedes usar</p>
