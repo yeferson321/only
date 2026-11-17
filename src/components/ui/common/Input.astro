@@ -1,23 +1,25 @@
 ---
+import './styles.css';
+
 interface Props extends astroHTML.JSX.InputHTMLAttributes {
     id: string;
-    label?: string;
     class?: string;
+    labelText?: string;
     labelSize?: string;
     labelGap?: string;
 };
 
-const { id, type, label, class: className, labelSize, labelGap, ...inputAttributes } = Astro.props;
+const { id, type, class: className, labelText, labelSize, labelGap, ...inputAttributes } = Astro.props;
 ---
 
 <fieldset class:list={["input-field", className]} style={{ "--label-size": labelSize, "--label-gap": labelGap }}>
     <legend aria-hidden="true" class="input-legend">
-        <span>{label}</span>
+        <span>{labelText}</span>
     </legend>
 
     <input id={id} type={type} {...inputAttributes} placeholder=" " />
 
-    <label for={id} class="input-label">{label}</label>
+    <label for={id} class="input-label">{labelText}</label>
 </fieldset>
 
 <style>
@@ -25,9 +27,7 @@ const { id, type, label, class: className, labelSize, labelGap, ...inputAttribut
     interpolate-size: allow-keywords;
     position: relative;
     min-width: 0;
-    transition: 
-        border-color var(--transition-duration, 300ms) var(--transition-timing, ease-in-out), 
-        color var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: border-color var(--_transition), color var(--_transition);
 }
 
 .input-field input {
@@ -39,6 +39,7 @@ const { id, type, label, class: className, labelSize, labelGap, ...inputAttribut
     font: inherit;
     color: inherit;
     -webkit-text-fill-color: currentColor;
+    text-overflow: ellipsis;
 }
 
 .input-legend {
@@ -52,7 +53,7 @@ const { id, type, label, class: className, labelSize, labelGap, ...inputAttribut
     white-space: nowrap;
     font-size: var(--label-size);
     line-height: 0;
-    transition: width var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: width var(--_transition);
 }
 
 .input-legend span {
@@ -66,9 +67,7 @@ const { id, type, label, class: className, labelSize, labelGap, ...inputAttribut
     padding-inline-start: inherit;
     transform: translateY(-50%);
     pointer-events: none;
-    transition: 
-        top var(--transition-duration, 300ms) var(--transition-timing, ease-in-out), 
-        font-size var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: top var(--_transition), font-size var(--_transition);
 }
 
 .input-field:is(:focus-within, :has(input:is(:not(:placeholder-shown), :autofill))) {
@@ -80,10 +79,6 @@ input:-webkit-autofill {
     transition-property: background-color, color, -webkit-text-fill-color;
     transition-duration: 5000s;
 }
-
-/* @media (prefers-reduced-motion: reduce) {
-    .input-field, .input-legend, .input-label { transition: none; }
-} */
 </style>
 
 

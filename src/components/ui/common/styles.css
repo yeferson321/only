@@ -1,7 +1,5 @@
-/* Bloquea el scroll de la página mientras haya abierto un componente con `data-scroll-lock`.
-   El componente debe exponer `data-state` y usar "closed" cuando está cerrado. */
-html:has([data-scroll-lock]:not([data-state="closed"])) {
-    overflow: hidden;
+:root {
+    --_transition: var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
 }
 
 /* Sin animaciones para quien las tiene desactivadas.
@@ -10,4 +8,10 @@ html:has([data-scroll-lock]:not([data-state="closed"])) {
     :root {
         --transition-duration: 0ms;
     }
+}
+
+/* Bloquea el scroll de la página mientras haya abierto un componente con `data-scroll-lock`.
+   El componente debe exponer `data-state` y usar "closed" cuando está cerrado. */
+html:has([data-scroll-lock]:not([data-state="closed"])) {
+    overflow: hidden;
 }

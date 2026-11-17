@@ -51,7 +51,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     inset: 0px;
     opacity: 0;
     background-color: var(--overlay-color);
-    transition: opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: opacity var(--_transition);
 }
 
 .modal[data-state="open"] > .modal-overlay { opacity: 1; }
@@ -59,7 +59,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 /* No captura clics: así llegan al overlay y solo el panel los recibe. */
 .modal-wrapper {
     position: fixed;
-        width: 100vw;
+    width: 100vw;
     inset: 0px;
     z-index: 50;
     width: 100vw;
@@ -86,7 +86,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
     transform: translateY(10px) scale(85%);
     transition: 
         /* opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out),  */
-        transform var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+        transform var(--_transition);
 }
 
 .modal[data-state="open"] .modal-panel {
@@ -97,16 +97,12 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 /* El fade lo hace el contenido (el vidrio), no el panel. */
 .modal-panel > :global(*) {
     opacity: 0;
-    transition: opacity var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    transition: opacity var(--_transition);
 }
 
 .modal[data-state="open"] .modal-panel > :global(*) {
     opacity: 1;
 }
-
-/* .modal:not([data-state="closed"]) .modal-panel {
-    will-change: opacity, transform;
-} */
 </style>
 
 <script>
