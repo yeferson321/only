@@ -12,7 +12,7 @@ import '@/styles/global.css';
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
 	</head>
-	<body style="height:3000px " class="bg-gray-900">
+	<body style="height:3000px " class="bg-zinc-100 dark:bg-zinc-950">
 		<slot />
 	</body>
 </html>
@@ -32,3 +32,13 @@ import '@/styles/global.css';
   		font-style: normal;
 	}
 </style>
+
+<script>
+// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+// document.documentElement.classList.toggle("dark",
+//   localStorage.theme === "dark" ||
+//     (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
+// );
+// Whenever the user explicitly chooses light mode
+// localStorage.theme = "light";
+</script>

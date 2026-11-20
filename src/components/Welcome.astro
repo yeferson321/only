@@ -11,80 +11,119 @@ import { IconGoogle, IconX } from './ui/icons/brands';
 	Abrir Modal
 </button>
 
-<img src="https://cdn.pixabay.com/photo/2025/08/27/12/43/flower-9799874_1280.jpg" alt="Background" class="w-full  mt-60 " />
+<img src="https://cdn.pixabay.com/photo/2025/08/27/12/43/flower-9799874_1280.jpg" alt="Background" class="w-full  mt-10 " />
+
+<img src="https://cdn.pixabay.com/photo/2025/08/27/12/43/flower-9799874_1280.jpg" alt="Background" class="w-full  mt-10 " />
+
 
 <Modal id="signin-modal" verticalPosition="center" overlayColor="rgba(0,0,0,0.3)" offset="2rem" unmount={false}>
 
-		<div class="py-6 px-8 border rounded-4xl border-white/10 bg-taupe-800/60 backdrop-blur-2xl backdrop-saturate-125 shadow-xl">
+	<div class="py-6 px-8 rounded-4xl bg-neutral-800/60 backdrop-blur-2xl backdrop-saturate-125 shadow-md inset-ring inset-ring-white/2 inset-shadow-sm inset-shadow-white/10"> 
 
-			<div class="flex justify-end">
-				<button type="button" data-modal-close="signin-modal" aria-label="Cerrar modal de inicio de sesión">
-					<IconXmark stroke-width="1.8" width="28" height="28" class="stroke-white"/>
+			<div class="flex justify-end mb-2">
+				<button type="button" class="p-1 hover:scale-102 active:scale-98 transition-transform duration-300 ease-in-out" data-modal-close="signin-modal" aria-label="Cerrar modal de inicio de sesión">
+					<IconXmark stroke-width="1.8" width="26" height="26" class="stroke-white"/>
 				</button>
 			</div>
 
-			<h2 class="mb-3 text-2xl font-semibold text-white text-center">Crea tu cuenta</h2>
+			<h2 class="mb-3 text-2xl font-medium text-white text-center">Crea tu cuenta</h2>
 
-			<p class="mb-6 text-base text-white/80 text-center">¿Ya tienes una cuenta? <button class="underline font-medium text-white"> Inicia sesión</button></p>
+			<p class="mb-7 text-base font-medium text-neutral-300 text-center">¿Ya tienes una cuenta?<br><button class="underline text-white">Inicia sesión</button></p>
 
-			<div class="mb-6 space-y-4">
+			<div class="mb-7 space-y-5">
 
-				<Input id="signin-email" type="email" name="email" autocomplete="email" spellcheck={false} class="text-lg text-white px-4 rounded-2xl border border-white focus-within:border-purple-600" labelText="Tu correo electrónico" labelGap="0.5rem" labelSize="1rem" required/>
+				<Input id="signin-email" type="email" name="email" autocomplete="email" spellcheck={false} class="text-lg text-white h-14 px-4 rounded-2xl border border-white focus-within:border-blue-500" labelText="Tu correo electrónico" labelColor="oklch(62.3% 0.214 259.815)" labelGap="0.5rem" labelSize="1rem" required/>
 
-				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl drop-shadow-xl bg-purple-600 hover:bg-purple-700 transition-colors duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none" disabled>
+				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl bg-blue-600 shadow-md inset-shadow-sm inset-shadow-neutral-800/30 hover:scale-102 active:scale-98 transition-transform duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none">
 					Crear cuenta
     			</button>
 
 			</div>
 
-
-				<!-- <Input id="signin-email" type="email" label="Correo electrónico" class="text-lg text-white peer block w-full h-13 px-4 rounded-2xl border border-white bg-transparent transition-colors duration-300 focus:outline-none focus:border-purple-600">
-					<label for="signin-email" class="text-base leading-0.5 text-white absolute left-3 top-0 px-1 rounded-2xl pointer-events-none bg-taupe-800/60 backdrop-blur-2xl -translate-y-1/2 transition-all duration-300
-    				    peer-placeholder-shown:top-1/2
-    				    peer-placeholder-shown:text-lg
-						peer-placeholder-shown:bg-transparent
-    				    peer-placeholder-shown:backdrop-blur-none
-    				    peer-focus:top-0
-    				    peer-focus:text-base
-						peer-focus:bg-taupe-800/60
-    				    peer-focus:backdrop-blur-2xl">
-    				    Tu correo electrónico
-    				</label>
-				</Input> -->
-
-
-			<p class="mb-4 text-base text-white text-center">También puedes usar</p>
+			<p class="mb-5 text-base text-white text-center">También puedes usar</p>
 			
-			<div class="mb-6 space-y-4">
+			<div class="mb-7 space-y-5">
 
-				<button type="button" class="text-lg font-medium text-white w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl drop-shadow-xl bg-white hover:bg-black transition-colors duration-300 ease-in-out">
+				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-sm inset-shadow-neutral-800/30 hover:scale-102 active:scale-98 transition-transform duration-300 ease-in-out">
 					<IconGoogle width="20" height="20"/>
 					<span class="text-base font-medium text-neutral-600">Continuar con Google</span>
     			</button>
 
-				<button type="button" class="text-lg font-medium text-white w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl drop-shadow-xl bg-white hover:bg-black transition-colors duration-300 ease-in-out">
+				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-sm inset-shadow-neutral-800/30 hover:scale-102 active:scale-98 transition-transform duration-300 ease-in-out">
 					<IconX width="20" height="20"/>
 					<span class="text-base font-medium text-neutral-600">Continuar con X</span>
     			</button>
 
 			</div>
 
-			<p class="text-sm text-white/80 text-center">Al continuar, aceptas nuestras <a href="/terms" class="underline font-medium text-white">Condiciones de Uso</a> • <a href="/terms" class="underline font-medium text-white">Política de Privacidad</a></p>
+			<p class="text-sm text-neutral-300 text-center">Al continuar, aceptas nuestras <a href="/terms" class="underline font-medium text-white">Condiciones de Uso</a> • <a href="/terms" class="underline font-medium text-white">Política de Privacidad</a></p>
 
 		</div>
 
 </Modal>
 
 <style>
-	.content {
-		/* padding: 2rem;
-		background-color: white; */
-		    /* backdrop-filter: blur(1px); */
-		/* box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); */
-	}
 
-	 .item {
-        /* content-visibility: auto;
-        contain-intrinsic-size: auto 3.5rem; */
-    }
+	 /* .glass-close {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: rgba(255, 255, 255, 0.92);
+    cursor: pointer;
+
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.04)
+    );
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.55), 
+      inset 0 -1px 2px rgba(0, 0, 0, 0.25),       
+      inset 0 0 12px rgba(255, 255, 255, 0.08),   
+      0 6px 16px rgba(0, 0, 0, 0.28),             
+      0 1px 2px rgba(0, 0, 0, 0.2);
+
+    transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1),
+                box-shadow 0.2s ease;
+  }
+
+
+  .glass-close::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.05) 45%,
+      rgba(255, 255, 255, 0.25)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+
+  .glass-close:hover  { transform: scale(1.06); }
+
+  .glass-close:active {
+    transform: scale(0.94);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.35),
+      inset 0 1px 1px rgba(255, 255, 255, 0.3),
+      0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+  .glass-close:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 3px;
+  } */
 </style>

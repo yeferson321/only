@@ -7,18 +7,17 @@ interface Props extends astroHTML.JSX.InputHTMLAttributes {
     labelText?: string;
     labelSize?: string;
     labelGap?: string;
+    labelColor?: string;
 };
 
-const { id, type, class: className, labelText, labelSize, labelGap, ...inputAttributes } = Astro.props;
+const { id, type, class: className, labelText  = 'Label text', labelSize, labelGap, labelColor, ...inputAttributes } = Astro.props;
 ---
 
-<fieldset class:list={["input-field", className]} style={{ "--label-size": labelSize, "--label-gap": labelGap }}>
+<fieldset class:list={["input-field", className]} style={(labelSize || labelGap || labelColor) && { "--label-size": labelSize, "--label-gap": labelGap, "--label-color": labelColor }}>
     <legend aria-hidden="true" class="input-legend">
         <span>{labelText}</span>
     </legend>
-
     <input id={id} type={type} {...inputAttributes} placeholder=" " />
-
     <label for={id} class="input-label">{labelText}</label>
 </fieldset>
 
@@ -32,7 +31,8 @@ const { id, type, class: className, labelText, labelSize, labelGap, ...inputAttr
 
 .input-field input {
     width: 100%;
-    height: var(--input-height, 3.25rem);
+    height: 100%;
+    padding: 0;
     border: none;
     background: transparent;
     outline: none;
@@ -63,16 +63,27 @@ const { id, type, class: className, labelText, labelSize, labelGap, ...inputAttr
 .input-label {
     position: absolute;
     top: 50%;
-    left: 0;
+    inset-inline-start: 0;
     padding-inline-start: inherit;
     transform: translateY(-50%);
     pointer-events: none;
-    transition: top var(--_transition), font-size var(--_transition);
+    color: inherit;
+    transition: top var(--_transition), color var(--_transition), font-size var(--_transition);
 }
 
 .input-field:is(:focus-within, :has(input:is(:not(:placeholder-shown), :autofill))) {
-    .input-legend { width: max-content; }
-    .input-label { top: 0; font-size: var(--label-size); }
+    .input-legend { 
+        width: max-content; 
+    }
+
+    .input-label { 
+        top: 0;
+        font-size: var(--label-size); 
+    }
+}
+
+.input-field:focus-within .input-label {
+    color: var(--label-color, inherit);
 }
 
 input:-webkit-autofill {
@@ -80,71 +91,3 @@ input:-webkit-autofill {
     transition-duration: 5000s;
 }
 </style>
-
-
-
-<!-- <fieldset class="group relative min-w-0 rounded-2xl border border-white px-(--field-padding) transition-colors duration-300 focus-within:border-purple-600 motion-reduce:transition-none
-    [--field-padding:1rem]
-    [--label-gap:0.375rem]
-    [--legend-height:0.25rem]
-    [--floating-label-size:1rem]">
-    
-    <legend aria-hidden="true" class="invisible -mb-(--legend-height) -ml-(--label-gap) h-(--legend-height) w-0 overflow-hidden p-0 whitespace-nowrap text-(length:--floating-label-size) [interpolate-size:allow-keywords] transition-[width] duration-300 motion-reduce:transition-none
-        group-focus-within:w-max
-        group-has-[input:not(:placeholder-shown)]:w-max
-        group-has-[input:autofill]:w-max">
-        <span class="px-(--label-gap)">{label}</span>
-    </legend>
-    
-    <input id={id} type={type} class="peer block h-13 w-full border-none bg-transparent text-lg text-white outline-none" placeholder=" " {...inputAttributes}/>
-    <label for={id} class="pointer-events-none absolute top-1/2 left-[calc(var(--field-padding)-var(--label-gap))] -translate-y-1/2 px-(--label-gap) text-lg text-white transition-[top,font-size,color] duration-300 motion-reduce:transition-none
-        peer-focus:top-0
-        peer-focus:text-(length:--floating-label-size)
-        peer-not-placeholder-shown:top-0
-        peer-not-placeholder-shown:text-(length:--floating-label-size)
-        peer-autofill:top-0
-        peer-autofill:text-(length:--floating-label-size)">
-        {label}
-    </label>
-</fieldset> -->
-
- <!-- <div class="relative">
-        
-        <input id={id} type={type} class:list={["field-input", className]} placeholder=" " {...inputAttributes} data-field-input />
-        
-        <slot/>
-
-    </div> -->
-
-<!-- <fieldset role="none" class="group/field relative min-w-0 rounded-2xl border border-current px-(--field-padding) text-white transition-colors duration-300
-    focus-within:border-(--field-accent)
-    motion-reduce:transition-none
-    [--field-accent:var(--color-purple-600)]
-    [--field-padding:1rem]
-    [--label-gap:0.375rem]
-    [--legend-height:0.25rem]
-    [--floating-label-size:1rem]">
-
-    <legend aria-hidden="true" class="invisible -ms-(--label-gap) -mb-(--legend-height) h-(--legend-height) w-0 overflow-hidden p-0 text-(length:--floating-label-size) whitespace-nowrap transition-[width] duration-300
-        [interpolate-size:allow-keywords]
-        motion-reduce:transition-none
-        group-focus-within/field:w-max
-        group-has-[input:not(:placeholder-shown)]/field:w-max
-        group-has-[input:autofill]/field:w-max">
-        <span class="px-(--label-gap)">{label}</span>
-    </legend>
-
-    <input id={id} type={type} class:list={["peer block h-13 w-full border-none bg-transparent text-lg outline-hidden autofill:[-webkit-text-fill-color:currentColor] autofill:[transition:background-color_9999s_ease-in-out_0s]", className]} placeholder=" " {...inputAttributes} />
-
-    <label for={id} class="pointer-events-none absolute start-[calc(var(--field-padding)-var(--label-gap))] top-1/2 -translate-y-1/2 px-(--label-gap) text-lg transition-[top,font-size,color] duration-300
-        motion-reduce:transition-none
-        peer-focus:top-0
-        peer-focus:text-(length:--floating-label-size)
-        peer-focus:text-(--field-accent)
-        peer-not-placeholder-shown:top-0
-        peer-not-placeholder-shown:text-(length:--floating-label-size)
-        peer-autofill:top-0
-        peer-autofill:text-(length:--floating-label-size)">
-        {label}
-    </label>
-</fieldset> -->
