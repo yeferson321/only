@@ -6,12 +6,11 @@ html, body {
 	height: 100%;
 }
 
-/* @media (prefers-reduced-motion: reduce) { * { transition: none !important } } */
-
 :root {
-    /* --transition-duration: 500ms;
-    --transition-timing: ease-in-out; */
+    --_transition: 300ms ease-in-out;
 }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
 
 /* custom scrollbar */
 @media (pointer: fine) {
@@ -44,15 +43,24 @@ html, body {
 }
 
 /* hide-scrollbar */
-.hide-scrollbar {
+/* .hide-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
-}
+} */
 
 button {
     cursor: pointer;
+    transition: scale var(--_transition);
+}
+
+button:hover {
+    scale: 102%;
+}
+
+button:active {
+    scale: 98%;
 }

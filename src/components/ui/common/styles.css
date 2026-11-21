@@ -1,5 +1,5 @@
 :root {
-    --_transition: var(--transition-duration, 300ms) var(--transition-timing, ease-in-out);
+    /* --_transition: var(--transition-duration, 300ms) var(--transition-timing, ease-in-out); */
 }
 
 /* Sin animaciones para quien las tiene desactivadas.

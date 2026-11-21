@@ -1,5 +1,7 @@
 ---
 import './styles.css';
+import ToggleButton from './ToggleButton.astro';
+import { IconEye, IconEyeSlash } from '../icons/outline';
 
 interface Props extends astroHTML.JSX.InputHTMLAttributes {
     id: string;
@@ -10,7 +12,7 @@ interface Props extends astroHTML.JSX.InputHTMLAttributes {
     labelColor?: string;
 };
 
-const { id, type, class: className, labelText  = 'Label text', labelSize, labelGap, labelColor, ...inputAttributes } = Astro.props;
+const { id, type, class: className, labelText = 'Label text', labelSize, labelGap, labelColor, ...inputAttributes } = Astro.props;
 ---
 
 <fieldset class:list={["input-field", className]} style={(labelSize || labelGap || labelColor) && { "--label-size": labelSize, "--label-gap": labelGap, "--label-color": labelColor }}>
@@ -19,7 +21,50 @@ const { id, type, class: className, labelText  = 'Label text', labelSize, labelG
     </legend>
     <input id={id} type={type} {...inputAttributes} placeholder=" " />
     <label for={id} class="input-label">{labelText}</label>
+
+    { type === "password" && (
+
+        <ToggleButton id={`${id}-toggle-button`} type="button" class="input-toggle" aria-controls={id} aria-label="Mostrar contraseña" mode="toggle">
+            <IconEye stroke-width="1.6" width="20" height="20" class="stroke-white hidden" data-toggle-button-active />
+            <IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-inactive/> 
+        </ToggleButton>
+
+        // <button id={`${id}-toggle-button`} type="button" class="input-toggle" aria-label="Mostrar contraseña" aria-controls={id} aria-pressed="false">
+        //     <span class="input-toggle-icon">
+        //         <IconEye stroke-width="1.6" width="20" height="20" class="stroke-white hidden" data-toggle-button-active />
+        //         <IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-inactive/> 
+        //     </span>
+        // </button>
+    )}
 </fieldset>
+
+<script>
+    const setupPasswordVisibility = (fieldElement: HTMLDivElement) => { 
+        const passwordInput = fieldElement.querySelector<HTMLInputElement>('input[type="password"]');
+        const toggleButton = fieldElement.querySelector<HTMLButtonElement>('[id$="-toggle-button"]');
+
+        if (!passwordInput) return;
+
+        toggleButton?.addEventListener("click", () => {
+            const show = passwordInput.type === "password";
+            passwordInput.type = show ? "text" : "password";
+        });
+    };
+    
+    document.querySelectorAll<HTMLDivElement>(".input-field").forEach(setupPasswordVisibility);
+
+    //    const setupPasswordVisibility = (fieldElement: HTMLDivElement) => { 
+    //     const passwordInput = fieldElement.querySelector<HTMLInputElement>('input[type="password"]');
+    //     const toggleButton = fieldElement.querySelector<HTMLButtonElement>('[id$="-toggle-button"]');
+
+    //     toggleButton?.addEventListener("toggle-button:change", (event) => {
+    //         const { active } = (event as CustomEvent<{ active: boolean }>).detail;
+    //         if (passwordInput) passwordInput.type = active ? "text" : "password";
+    //     });
+    // };
+    
+    // document.querySelectorAll<HTMLDivElement>(".form-field").forEach(setupPasswordVisibility);
+</script>
 
 <style>
 .input-field {
@@ -84,6 +129,24 @@ const { id, type, class: className, labelText  = 'Label text', labelSize, labelG
 
 .input-field:focus-within .input-label {
     color: var(--label-color, inherit);
+}
+
+.input-toggle {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    box-sizing: content-box;
+    inline-size: 0;
+    block-size: 100%;
+    padding: 0;
+    padding-inline-end: inherit;
+    cursor: pointer;
+}
+
+.input-toggle :global(svg) {
+    position: absolute;
+    inset: 0;
+    margin: auto;
 }
 
 input:-webkit-autofill {
