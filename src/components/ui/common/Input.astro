@@ -1,18 +1,23 @@
 ---
 import './styles.css';
 import ToggleButton from './ToggleButton.astro';
-import { IconEye, IconEyeSlash } from '../icons/outline';
 
 interface Props extends astroHTML.JSX.InputHTMLAttributes {
     id: string;
     class?: string;
-    labelText?: string;
-    labelSize?: string;
-    labelGap?: string;
-    labelColor?: string;
+    label?: {
+        labelText?: string;
+        labelSize?: string;
+        labelGap?: string;
+        labelColor?: string;
+    },
+    toggleLabels?: {
+        ariaLabelActive?: string;
+        ariaLabelInactive?: string;
+    }
 };
 
-const { id, type, class: className, labelText = 'Label text', labelSize, labelGap, labelColor, ...inputAttributes } = Astro.props;
+const { id, type, class: className, label: { labelText = 'Label text', labelSize, labelGap, labelColor } = {}, toggleLabels: { ariaLabelActive = 'Show password', ariaLabelInactive = 'Hide password' } = {}, ...inputAttributes } = Astro.props;
 ---
 
 <fieldset class:list={["input-field", className]} style={(labelSize || labelGap || labelColor) && { "--label-size": labelSize, "--label-gap": labelGap, "--label-color": labelColor }}>
@@ -21,22 +26,17 @@ const { id, type, class: className, labelText = 'Label text', labelSize, labelGa
     </legend>
     <input id={id} type={type} {...inputAttributes} placeholder=" " />
     <label for={id} class="input-label">{labelText}</label>
-
     { type === "password" && (
-
-        <ToggleButton id={`${id}-toggle-button`} type="button" class="input-toggle" aria-controls={id} aria-label="Mostrar contraseña" mode="toggle">
-            <IconEye stroke-width="1.6" width="20" height="20" class="stroke-white hidden" data-toggle-button-active />
-            <IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-inactive/> 
+        <ToggleButton id={`${id}-toggle-button`} type="button" class="input-toggle" ariaLabelActive={ariaLabelActive} ariaLabelInactive={ariaLabelInactive} aria-controls={id}>
+            <slot/>
         </ToggleButton>
-
-        // <button id={`${id}-toggle-button`} type="button" class="input-toggle" aria-label="Mostrar contraseña" aria-controls={id} aria-pressed="false">
-        //     <span class="input-toggle-icon">
-        //         <IconEye stroke-width="1.6" width="20" height="20" class="stroke-white hidden" data-toggle-button-active />
-        //         <IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-inactive/> 
-        //     </span>
-        // </button>
     )}
 </fieldset>
+
+		<!-- <ToggleButton id={`signin-email-toggle-button`} type="button" class="input-toggle" aria-controls="signin-email" aria-label="Mostrar contraseña">
+        			    <IconEye stroke-width="1.6" width="20" height="20" class="stroke-white hidden" data-toggle-button-active />
+        			    <IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-inactive/> 
+        			</ToggleButton> -->
 
 <script>
     const setupPasswordVisibility = (fieldElement: HTMLDivElement) => { 

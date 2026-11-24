@@ -1,10 +1,11 @@
 ---
 import astroLogo from '../assets/astro.svg';
 import background from '../assets/background.svg';
-import IconXmark from './ui/icons/outline/IconXmark.svg';
 import Modal from './ui/common/Modal.astro';
 import Input from './ui/common/Input.astro';
+import ToggleButton from './ui/common/ToggleButton.astro';
 import { IconGoogle, IconX } from './ui/icons/brands';
+import { IconXmark, IconEye, IconEyeSlash } from './ui/icons/outline';
 ---
 
 <button type="button" class="p-2.5 rounded-full bg-blue-500/20 hover:bg-blue-500/30 transition-colors duration-300 ease-in-out" data-modal-open="signin-modal" aria-label="Abrir modal de inicio de sesión" aria-haspopup="dialog" aria-expanded="false" aria-controls="signin-modal">
@@ -31,28 +32,36 @@ import { IconGoogle, IconX } from './ui/icons/brands';
 				</p>
 			</div>
 
-			<div class="mb-6 space-y-5">
-
-				<Input id="signin-email" type="email" name="email" autocomplete="email" spellcheck={false} class="text-lg text-white h-14 px-4 rounded-2xl border border-white focus-within:border-blue-500" labelText="Tu correo electrónico" labelSize="1rem" labelGap="0.5rem" labelColor="oklch(62.3% 0.214 259.815)" required/>
-
-				<Input id="signin-password" type="password" name="password" autocomplete="current-password" spellcheck={false} class="text-lg text-white h-14 pl-4 pr-13 rounded-2xl border border-white focus-within:border-blue-500" labelText="Tu contraseña" labelSize="1rem" labelGap="0.5rem" labelColor="oklch(62.3% 0.214 259.815)" required/>
-
-				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl bg-blue-600 shadow-md inset-shadow-sm inset-shadow-neutral-800/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none">
+	
+			<form class="mb-6 space-y-5">
+				
+				<Input id="signin-email" type="email" name="email" autocomplete="email" spellcheck={false} class="text-lg text-white h-14 px-4 rounded-2xl border border-white focus-within:border-blue-500" 
+					label={{ labelText: "Tu correo electrónico", labelSize: "1rem", labelGap: "0.5rem", labelColor: "oklch(62.3% 0.214 259.815)" }} required/>
+																																																					
+				<Input id="signin-password" type="password" name="password" autocomplete="current-password" spellcheck={false} class="text-lg text-white h-14 pl-4 pr-13 rounded-2xl border border-white focus-within:border-blue-500" 
+					label={{ labelText: "Tu contraseña", labelSize: "1rem", labelGap: "0.5rem", labelColor: "oklch(62.3% 0.214 259.815)" }} 
+					toggleLabels={{ ariaLabelActive: "Show password", ariaLabelInactive: "Hide password" }} required>
+					<IconEyeSlash stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-slot="active"/> 
+					<IconEye stroke-width="1.6" width="20" height="20" class="stroke-white" data-toggle-button-slot="inactive" />
+				</Input>
+			
+				<button type="button" class="text-lg font-medium text-white w-full h-12 px-4 rounded-3xl bg-blue-600 shadow-md inset-shadow-[0.7px_1.3px_2.4px_rgba(255,255,255,0.2),-0.7px_-1.3px_3px_rgba(0,0,0,0.4)] disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none">
 					Siguiente
-    			</button>
+	    		</button>
+			
+			</form>
 
-			</div>
 
 			<div class="mb-6 space-y-5">
 
 				<p class="text-base text-white text-center">También puedes usar</p>
 			
-				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-sm inset-shadow-neutral-800/30">
+				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-[0.7px_1.3px_2.4px_rgba(255,255,255,0.3),-0.7px_-1.3px_3px_rgba(0,0,0,0.4)]">
 					<IconGoogle width="20" height="20"/>
 					<span class="text-base font-medium text-neutral-800">Continuar con Google</span>
     			</button>
 
-				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-sm inset-shadow-neutral-800/30">
+				<button type="button" class="w-full flex justify-center items-center gap-3 h-12 px-4 rounded-3xl bg-white shadow-md inset-shadow-[0.7px_1.3px_2.4px_rgba(255,255,255,0.3),-0.7px_-1.3px_3px_rgba(0,0,0,0.4)]">
 					<IconX width="20" height="20"/>
 					<span class="text-base font-medium text-neutral-800">Continuar con X</span>
     			</button>
@@ -66,6 +75,37 @@ import { IconGoogle, IconX } from './ui/icons/brands';
 </Modal>
 
 <style>
+	.btn-3d {
+
+  
+  box-shadow:
+    inset 0.7px 1.3px 2.4px rgba(255,255,255,0.3),
+    inset -0.7px -1.3px 3px rgba(0,0,0,0.4),
+   
+    -0.6px -1px 3px rgba(255,255,255,.05);
+}
+
+.btn-3d-ligh {
+      box-shadow:
+    inset -0.7px -1.3px 3px rgba(0,0,0,.4),
+    0 2px 4px rgba(0,0,0,.35); 
+}
+
+.btn-3d-light {
+  background-color: #fff;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0,0,0,.07) 0%,
+    rgba(0,0,0,.04) 45%,
+    rgba(0,0,0,.13) 100%
+  );
+  box-shadow:
+    inset 0 1.5px 0 #fff,                          /* línea de luz nítida arriba */
+    inset 0.7px 1.3px 2.4px rgba(255,255,255,1),   /* tu reflejo, ahora al 100% */
+    inset -0.7px -1.3px 3px rgba(0,0,0,.28),       /* sombra interna abajo */
+    0 2px 5px rgba(0,0,0,.55),                     /* separa el botón del fondo */
+    0 -0.5px 1px rgba(255,255,255,.18);            /* borde de luz exterior */
+}
 
 	 /* .glass-close {
     position: relative;

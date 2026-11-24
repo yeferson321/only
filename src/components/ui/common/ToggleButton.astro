@@ -7,13 +7,11 @@ interface Props extends astroHTML.JSX.ButtonHTMLAttributes {
     ariaLabelInactive?: string;
 };
 
-const { id, type = "button", class: className, mode = "toggle", ariaLabelActive, ariaLabelInactive, ...attributes } = Astro.props;
+const { id, type = "button", mode = "busy", class: className, ariaLabelActive, ariaLabelInactive, ...attributes } = Astro.props;
 const ariaStateAttr = mode === "busy" ? { "aria-busy": "false" as const } : { "aria-pressed": "false" as const };
-
-console.log(ariaStateAttr)
 ---
 
-<button id={id} type={type} class:list={["toggle-button", className]} data-toggle-button-id={id} data-state="inactive" data-aria-label-active={ariaLabelActive} data-aria-label-inactive={ariaLabelInactive} {...attributes} {...ariaStateAttr} aria-label={ariaLabelInactive}>        
+<button id={id} type={type} class:list={["toggle-button", className]} data-toggle-button-id={id} data-state="inactive" data-mode={mode} data-aria-label-active={ariaLabelActive} data-aria-label-inactive={ariaLabelInactive} {...attributes} {...ariaStateAttr} aria-label={ariaLabelInactive}>        
     <slot />
 </button>
 
@@ -23,25 +21,28 @@ console.log(ariaStateAttr)
 
         if (!toggleButtonId) throw new Error('Missing "data-toggle-button-id" attribute on ToggleButton component');
 
+        const slotElements = buttonElement.querySelectorAll<HTMLElement>("[data-toggle-button-slot]");
+        const startsActive = Array.from(slotElements, (element) => element.dataset.toggleButtonSlot === "active");
+
         delete buttonElement.dataset.ariaLabelActive;
         delete buttonElement.dataset.ariaLabelInactive;
-        const ariaStateAttribute = buttonElement.hasAttribute("aria-busy") ? "aria-busy" : "aria-pressed";
 
-        const activeElement = buttonElement.querySelector<HTMLElement>("[data-toggle-button-active]");
-        const inactiveElement = buttonElement.querySelector<HTMLElement>("[data-toggle-button-inactive]");
+        const ariaStateAttribute = buttonElement.dataset.mode === "busy" ? "aria-busy" : "aria-pressed";
 
         const setAccessibility = (isActive: boolean) => {
             buttonElement.setAttribute("aria-label", isActive ? ariaLabelActive : ariaLabelInactive);
             buttonElement.setAttribute(ariaStateAttribute, String(isActive));
         };
 
+        const setSlots = (nextIsActive: boolean) => slotElements.forEach((element, index) => { 
+            element.dataset.toggleButtonSlot = startsActive[index] !== nextIsActive ? "active" : "inactive";
+        });
+
         const setState = (nextIsActive: boolean) => {
             buttonElement.dataset.state = nextIsActive ? "active" : "inactive";
             setAccessibility(nextIsActive);
-
-            activeElement?.classList.toggle("hidden", !nextIsActive);
-            inactiveElement?.classList.toggle("hidden", nextIsActive);
-
+            setSlots(nextIsActive);
+        
             buttonElement.dispatchEvent(new CustomEvent("toggle-button:change", { detail: { active: nextIsActive }, bubbles: true }));
         };
 
@@ -55,3 +56,9 @@ console.log(ariaStateAttr)
 
     document.querySelectorAll<HTMLButtonElement>(".toggle-button").forEach(setupToggleButton);
 </script>
+
+<style>
+.toggle-button :global([data-toggle-button-slot="inactive"]) {
+    display: none;
+}
+</style>

@@ -1,17 +1,23 @@
 :root {
+    --_transition: 300ms ease-in-out;
     /* --_transition: var(--transition-duration, 300ms) var(--transition-timing, ease-in-out); */
 }
 
-/* Sin animaciones para quien las tiene desactivadas.
-   Funciona porque los componentes usan `var(--transition-duration, 300ms)`. */
-@media (prefers-reduced-motion: reduce) {
+/* @media (prefers-reduced-motion: reduce) {
     :root {
         --transition-duration: 0ms;
     }
-}
+}  */
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+
 
 /* Bloquea el scroll de la página mientras haya abierto un componente con `data-scroll-lock`.
    El componente debe exponer `data-state` y usar "closed" cuando está cerrado. */
 html:has([data-scroll-lock]:not([data-state="closed"])) {
     overflow: hidden;
+}
+
+.hidden {
+    display: none;
 }

@@ -6,12 +6,6 @@ html, body {
 	height: 100%;
 }
 
-:root {
-    --_transition: 300ms ease-in-out;
-}
-
-@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
-
 /* custom scrollbar */
 @media (pointer: fine) {
     html, body {
