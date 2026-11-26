@@ -118,18 +118,14 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 
         const openButtonElements = document.querySelectorAll<HTMLElement>(`[data-modal-open="${modalId}"]`);
         const closeButtonElements = document.querySelectorAll<HTMLElement>(`[data-modal-close="${modalId}"]`);
-            
-        // const openButtonElement = document.querySelector<HTMLButtonElement>(`[data-modal-open="${modalId}"]`);
-        // const closeButtonElement = modalElement.querySelector<HTMLButtonElement>(`[data-modal-close="${modalId}"]`);
-
+        
         const focusableElement = modalElement.querySelector<HTMLElement>(`[data-modal-autofocus="${modalId}"]`);
         let lastFocusedElement: HTMLElement | null = null;
 
-        const setAccessibility = (isHidden: boolean) => {
-            modalElement.dataset.state = isHidden ? "closed" : "open";
-            modalElement.setAttribute("aria-hidden", String(isHidden));
-            openButtonElements.forEach((button) => button.setAttribute("aria-expanded", String(!isHidden)));            
-            // openButtonElement?.setAttribute("aria-expanded", String(!isHidden));
+        const setAccessibility = (isOpen: boolean) => {
+            modalElement.dataset.state = isOpen ? "open" : "closed";
+            modalElement.setAttribute("aria-hidden", String(!isOpen));
+            openButtonElements.forEach((openButtonElement) => openButtonElement.setAttribute("aria-expanded", String(isOpen)));
         };
 
         const emitChange = (isOpen: boolean) => {
@@ -153,11 +149,10 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
             modalElement.dataset.state = "opening";
 
             getComputedStyle(panelElement).transform;
-
-                    setAccessibility(false);
-                    emitChange(true);
-                    modalElement.addEventListener("keydown", handleKeyboard);
-                    (focusableElement || modalElement).focus({ preventScroll: true });
+            setAccessibility(true);
+            emitChange(true);
+            modalElement.addEventListener("keydown", handleKeyboard);
+            (focusableElement || modalElement).focus({ preventScroll: true });
           
         };
 
@@ -172,7 +167,7 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
             const animations = [...overlayElement.getAnimations(), ...panelElement.getAnimations({ subtree: true })];
 
             Promise.allSettled(animations.map(({ finished }) => finished)).then(() => {
-                setAccessibility(true);
+                setAccessibility(false);
                 emitChange(false);
                 if (shouldUnmount) removeElement(modalElement);
             });
@@ -181,8 +176,6 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
         overlayElement.addEventListener("click", hideModal);
         openButtonElements.forEach((button) => button.addEventListener("click", showModal));
         closeButtonElements.forEach((button) => button.addEventListener("click", hideModal));
-        // openButtonElement?.addEventListener("click", showModal);
-        // closeButtonElement?.addEventListener("click", hideModal);
         window.addEventListener(`modal:show:${modalId}`, showModal);
         window.addEventListener(`modal:hide:${modalId}`, hideModal);
     };
