@@ -2,59 +2,62 @@
 interface Props extends astroHTML.JSX.ButtonHTMLAttributes {
     id: string;
     class?: string;
-    defaultOn?: boolean;
-    ariaLabelOn?: string;
-    ariaLabelOff?: string;
+    ariaLabelVisible?: string;
+    ariaLabelHidden?: string;
 };
 
-const { id, type = "button", defaultOn = false, class: className, ariaLabelOn, ariaLabelOff, ...attributes } = Astro.props;
-
-// Dos etiquetas distintas: cambia el aria-label. Si no, se usa aria-pressed con la etiqueta fija de `aria-label`.
-const swapsLabel = Boolean(ariaLabelOn && ariaLabelOff && ariaLabelOn !== ariaLabelOff);
-
-const initialLabel = swapsLabel ? (defaultOn ? ariaLabelOn : ariaLabelOff) : undefined;
-
-console.log(swapsLabel, initialLabel)
+const { id, type = "button", class: className, ariaLabelVisible, ariaLabelHidden, ...attributes } = Astro.props;
 ---
 
-<button id={id} type={type} class:list={["toggle-button", className]} data-toggle-button-id={id} data-state={defaultOn ? "on" : "off"} data-swaps-label={String(swapsLabel)} data-aria-label-on={ariaLabelOn} data-aria-label-off={ariaLabelOff} aria-label={initialLabel} aria-pressed={swapsLabel ? undefined : defaultOn ? "true" : "false"} {...attributes}>        
+<button id={id} type={type} class:list={["toggle-button", className]} data-toggle-button-id={id} data-state="false" data-aria-label-visible={ariaLabelVisible} data-aria-label-hidden={ariaLabelHidden} aria-label={ariaLabelVisible} {...attributes}>
     <slot />
 </button>
 
 <script>
+    const ARIA_STATE_ATTRIBUTES = ["aria-pressed", "aria-busy"];
+
     const setupToggleButton = (buttonElement: HTMLButtonElement) => {
-        const { toggleButtonId, swapsLabel, ariaLabelOn = "", ariaLabelOff = "" } = buttonElement.dataset;
-
+        const { toggleButtonId, ariaLabelVisible = "", ariaLabelHidden = "" } = buttonElement.dataset;
         if (!toggleButtonId) throw new Error('Missing "data-toggle-button-id" attribute on ToggleButton component');
-
-        delete buttonElement.dataset.ariaLabelOn;
-        delete buttonElement.dataset.ariaLabelOff;
 
         const slotElements = buttonElement.querySelectorAll<HTMLElement>("[data-toggle-button-slot]");
 
-        const setAccessibility = (isOn: boolean) => {
-            if (swapsLabel === "true") buttonElement.setAttribute("aria-label", isOn ? ariaLabelOn : ariaLabelOff);
-            else buttonElement.setAttribute("aria-pressed", String(isOn));
+        delete buttonElement.dataset.ariaLabelVisible;
+        delete buttonElement.dataset.ariaLabelHidden;
+
+        const hasLabels = Boolean(ariaLabelVisible && ariaLabelHidden);
+        const ariaStateNames = ARIA_STATE_ATTRIBUTES.filter((name) => buttonElement.hasAttribute(name));
+            
+        const setAccessibility = (isPressed: boolean) => {
+            if (hasLabels) buttonElement.setAttribute("aria-label", isPressed ? ariaLabelHidden : ariaLabelVisible);
+            ariaStateNames.forEach((name) => buttonElement.setAttribute(name, String(isPressed)));
         };
 
-        const setState = (nextIsOn: boolean) => {
-            const nextState = nextIsOn ? "on" : "off";
-            if (buttonElement.dataset.state === nextState) return;
+        const toggleVisibility = (nextIsPressed: boolean) => {
+            if (buttonElement.dataset.state === String(nextIsPressed)) return;
 
-            buttonElement.dataset.state = nextState;
-            setAccessibility(nextIsOn);
-            slotElements.forEach((element) => element.classList.toggle("hidden"));
+            buttonElement.dataset.state = String(nextIsPressed);
 
-            buttonElement.dispatchEvent(new CustomEvent("toggle-button:change", { detail: { isOn: nextIsOn }, bubbles: true }));
+            setAccessibility(nextIsPressed);
+
+            slotElements.forEach((element) => element.dataset.toggleButtonSlot = element.dataset.toggleButtonSlot === "visible" ? "hidden" : "visible");
+
+            buttonElement.dispatchEvent(new CustomEvent("toggle-button:change", { detail: { state: nextIsPressed }, bubbles: true }));
         };
 
-        const toggle = () => setState(buttonElement.dataset.state !== "on");
+        const toggle = () => toggleVisibility(buttonElement.dataset.state !== "true");
 
         buttonElement.addEventListener("click", toggle);
-        window.addEventListener(`toggle-button:toggle:${toggleButtonId}`, toggle);
-        window.addEventListener(`toggle-button:turnon:${toggleButtonId}`, () => setState(true));
-        window.addEventListener(`toggle-button:turnoff:${toggleButtonId}`, () => setState(false));
+        // window.addEventListener(`toggle-button:toggle:${toggleButtonId}`, toggle);
+        window.addEventListener(`toggle-button:press:${toggleButtonId}`, () => toggleVisibility(true));
+        window.addEventListener(`toggle-button:release:${toggleButtonId}`, () => toggleVisibility(false));
     };
 
     document.querySelectorAll<HTMLButtonElement>(".toggle-button").forEach(setupToggleButton);
 </script>
+
+<style>
+.toggle-button :global([data-toggle-button-slot="hidden"]) {
+    display: none;
+}
+</style>

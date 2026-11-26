@@ -12,12 +12,12 @@ interface Props extends astroHTML.JSX.InputHTMLAttributes {
         labelColor?: string;
     },
     toggleLabels?: {
-        ariaLabelOn?: string;
-        ariaLabelOff?: string;
+        ariaLabelVisible?: string;
+        ariaLabelHidden?: string;
     }
 };
 
-const { id, type, class: className, label: { labelText = 'Label text', labelSize, labelGap, labelColor } = {}, toggleLabels: { ariaLabelOn = 'Show password', ariaLabelOff = 'Hide password' } = {}, ...inputAttributes } = Astro.props;
+const { id, type, class: className, label: { labelText = 'Label text', labelSize, labelGap, labelColor } = {}, toggleLabels: { ariaLabelVisible = 'Show password', ariaLabelHidden = 'Hide password' } = {}, ...inputAttributes } = Astro.props;
 ---
 
 <fieldset class:list={["input-field", className]} style={(labelSize || labelGap || labelColor) && { "--label-size": labelSize, "--label-gap": labelGap, "--label-color": labelColor }}>
@@ -27,12 +27,11 @@ const { id, type, class: className, label: { labelText = 'Label text', labelSize
     <input id={id} type={type} {...inputAttributes} placeholder=" " />
     <label for={id} class="input-label">{labelText}</label>
     { type === "password" && (
-        <ToggleButton id={`${id}-toggle-button`} type="button" class="input-toggle" ariaLabelOn={ariaLabelOn} ariaLabelOff={ariaLabelOff} aria-controls={id}>
+        <ToggleButton id={`${id}-toggle-button`} type="button" class="input-toggle" ariaLabelVisible={ariaLabelVisible} ariaLabelHidden={ariaLabelHidden} aria-busy="false" aria-controls={id}>
             <slot/>
         </ToggleButton>
     )}
 </fieldset>
-
 
 <script>
     const setupPasswordVisibility = (fieldElement: HTMLDivElement) => { 

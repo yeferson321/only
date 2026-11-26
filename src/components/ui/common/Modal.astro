@@ -113,20 +113,28 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
         const panelElement = modalElement.querySelector<HTMLDivElement>(".modal-panel");
         if (!overlayElement || !panelElement) throw new Error(`Modal "${modalId}": component internal element(s) .modal-overlay or .modal-panel not found.`);
 
-        unmount === "true" ? removeElement(modalElement) : appendChildElement(modalElement);
+        const shouldUnmount = unmount === "true";
+        shouldUnmount ? removeElement(modalElement) : appendChildElement(modalElement);
 
-        const openButtonElement = document.querySelector<HTMLButtonElement>(`[data-modal-open="${modalId}"]`);
-        const closeButtonElement = modalElement.querySelector<HTMLButtonElement>(`[data-modal-close="${modalId}"]`);
+        const openButtonElements = document.querySelectorAll<HTMLElement>(`[data-modal-open="${modalId}"]`);
+        const closeButtonElements = document.querySelectorAll<HTMLElement>(`[data-modal-close="${modalId}"]`);
+            
+        // const openButtonElement = document.querySelector<HTMLButtonElement>(`[data-modal-open="${modalId}"]`);
+        // const closeButtonElement = modalElement.querySelector<HTMLButtonElement>(`[data-modal-close="${modalId}"]`);
+
         const focusableElement = modalElement.querySelector<HTMLElement>(`[data-modal-autofocus="${modalId}"]`);
         let lastFocusedElement: HTMLElement | null = null;
 
         const setAccessibility = (isHidden: boolean) => {
             modalElement.dataset.state = isHidden ? "closed" : "open";
             modalElement.setAttribute("aria-hidden", String(isHidden));
-            openButtonElement?.setAttribute("aria-expanded", String(!isHidden));
+            openButtonElements.forEach((button) => button.setAttribute("aria-expanded", String(!isHidden)));            
+            // openButtonElement?.setAttribute("aria-expanded", String(!isHidden));
+        };
 
-            const detail: ChangeDetail = { isOpen: !isHidden };
-            modalElement.dispatchEvent(new CustomEvent('modal:change', { detail }));
+        const emitChange = (isOpen: boolean) => {
+            const detail: ChangeDetail = { isOpen };
+            modalElement.dispatchEvent(new CustomEvent("modal:change", { detail }));
             window.dispatchEvent(new CustomEvent(`modal:change:${modalId}`, { detail }));
         };
 
@@ -140,17 +148,17 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
             // Se guarda antes de abrir, para restaurarlo al cerrar.
             lastFocusedElement = document.activeElement as HTMLElement;
 
-            if (unmount === "true") appendChildElement(modalElement);
+            if (shouldUnmount) appendChildElement(modalElement);
 
             modalElement.dataset.state = "opening";
 
-            requestAnimationFrame(() =>
-                requestAnimationFrame(() => {
+            getComputedStyle(panelElement).transform;
+
                     setAccessibility(false);
+                    emitChange(true);
                     modalElement.addEventListener("keydown", handleKeyboard);
                     (focusableElement || modalElement).focus({ preventScroll: true });
-                })
-            );
+          
         };
 
         const hideModal = () => {
@@ -165,13 +173,16 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 
             Promise.allSettled(animations.map(({ finished }) => finished)).then(() => {
                 setAccessibility(true);
-                if (unmount === "true") removeElement(modalElement);
+                emitChange(false);
+                if (shouldUnmount) removeElement(modalElement);
             });
         };
 
         overlayElement.addEventListener("click", hideModal);
-        openButtonElement?.addEventListener("click", showModal);
-        closeButtonElement?.addEventListener("click", hideModal);
+        openButtonElements.forEach((button) => button.addEventListener("click", showModal));
+        closeButtonElements.forEach((button) => button.addEventListener("click", hideModal));
+        // openButtonElement?.addEventListener("click", showModal);
+        // closeButtonElement?.addEventListener("click", hideModal);
         window.addEventListener(`modal:show:${modalId}`, showModal);
         window.addEventListener(`modal:hide:${modalId}`, hideModal);
     };
