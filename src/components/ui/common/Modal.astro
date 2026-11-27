@@ -148,11 +148,21 @@ const { id, class: className, overlayColor, offset, verticalPosition = 'center',
 
             modalElement.dataset.state = "opening";
 
-            getComputedStyle(panelElement).transform;
-            setAccessibility(true);
-            emitChange(true);
-            modalElement.addEventListener("keydown", handleKeyboard);
-            (focusableElement || modalElement).focus({ preventScroll: true });
+            // getComputedStyle(panelElement).transform;
+            // setAccessibility(true);
+            // emitChange(true);
+            // modalElement.addEventListener("keydown", handleKeyboard);
+            // (focusableElement || modalElement).focus({ preventScroll: true });
+
+
+            requestAnimationFrame(() =>
+                requestAnimationFrame(() => {
+                    setAccessibility(true);
+                    emitChange(true);
+                    modalElement.addEventListener("keydown", handleKeyboard);
+                    (focusableElement || modalElement).focus({ preventScroll: true });
+                })
+            );
           
         };
 
